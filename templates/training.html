@@ -1,0 +1,137 @@
+<html>
+
+<head>
+  <link rel="shortcut icon" href="#" />
+  <title>Training</title>
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="../static/style.css">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.js"></script>
+  <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark" style="height: 60px; background-color: #1a1d26;">
+    <a class="navbar-brand" href="/" style="margin-left: 45%;">
+      <img src="static/images/GetFitLogo.png" alt="logo" style="width:200px; height:50px;">
+    </a>
+  </nav>
+  <p id='status' style="margin: 0px; font-size: 10px;">Loading model...</p>
+  <p style="margin: 0px; font-size: 10px;">cond1: <span id="cond1"> 0 </span> </p>
+  <p style="margin: 0px; font-size: 10px;">cond2: <span id="cond2"> 0 </span> </p>
+  <div class="container-fluid" style="margin-top: 20px;">
+    <div class="row">
+      <div class="col-md-5" >
+        <div id="sketch-holder">
+          <!-- Place of canvas -->
+        </div>
+      </div>
+
+      <div class="col-md-6" style="padding-left: 200px; padding-top: 80px;">
+        <div style="margin-bottom: 30px; ">
+          <!-- Start collecting data -->
+          <button type="button" class="starting_training_btn btn btn-warning btn-lg" onclick="startTraining()"> <h2>START</h2> </button>
+
+         <!-- Stop collecting data and printing out result-->
+          <button type="button" style="display:none;" class="stopping_training_btn btn btn-danger btn-lg" data-toggle="modal" data-target="#ResultModal" onclick="stopTraining()"> <h2>STOP</h2> </button>
+        </div>
+       
+        <span id = "success_count" class="badge badge-success" style="font-size: 48px; margin-right: 20px;">0</span>
+        <span id = "mistake_count" class="badge badge-danger" style="font-size: 48px;" >0</span>
+        
+        
+        <div class="form-group" style="padding-top: 20px;">
+          <output class="form-control" id="feedback" style="font-weight: bold; font-size: 30px; height:auto; min-height: 70px;border: 3px solid black;">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="ResultModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">YOUR RESULT</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <b>Mistake: </b> <div id = "modal_mistake_count" > 0 </div> 
+          </div>
+          <div>
+            <b>Correct: </b> <div id= "modal_success_count"> 0 </div>
+          </div>
+          <div>
+            <b>Feedback: </b> <div id='modal_feedback'> </div> 
+          </div>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save result</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <audio media-player="audioPlayer" id="audioExcellent"
+                crossOrigin="anonymous" src="static/audio/excellent.mp3"></audio>
+
+  <audio media-player="audioPlayer" id="audioExcellent2"
+                crossOrigin="anonymous" src="static/audio/excellent2.mp3"></audio>
+
+  <audio media-player="audioPlayer" id="audioExcellent3"
+                crossOrigin="anonymous" src="static/audio/excellent3.mp3"></audio>
+
+ <audio media-player="audioPlayer" id="audioExcellent4"
+                crossOrigin="anonymous" src="static/audio/excellent4.mp3"></audio>
+
+  <audio media-player="audioPlayer" id="audioBicepCurls1"
+                crossOrigin="anonymous" src="static/audio/bicep_curls_mistake1.mp3"></audio>
+
+  <audio media-player="audioPlayer" id="audioBicepCurls2"
+                crossOrigin="anonymous" src="static/audio/bicep_curls_mistake2.mp3"></audio>
+
+  <audio media-player="audioPlayer" id="audioFrontRaise1"
+                crossOrigin="anonymous" src="static/audio/front_raise_mistake1.mp3"></audio>
+
+  <audio media-player="audioPlayer" id="audioFrontRaise2"
+                crossOrigin="anonymous" src="static/audio/front_raise_mistake2.mp3"></audio>
+
+  <audio media-player="audioPlayer" id="audioLateralRaise1"
+                crossOrigin="anonymous" src="static/audio/lateral_raise_mistake1.mp3"></audio>
+
+  <audio media-player="audioPlayer" id="audioLateralRaise2"
+                crossOrigin="anonymous" src="static/audio/lateral_raise_mistake2.mp3"></audio>
+
+  <audio media-player="audioPlayer" id="audioSquat1"
+                crossOrigin="anonymous" src="static/audio/squat_mistake1.mp3"></audio>
+
+  <audio media-player="audioPlayer" id="audioSquat2"
+                crossOrigin="anonymous" src="static/audio/squat_mistake2.mp3"></audio>
+
+  <script src="../static/webcam.js"></script>
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>
+
+
+<!-- <script src="{{ url_for('static', filename='video.js') }}"></script> -->

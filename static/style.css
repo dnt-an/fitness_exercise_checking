@@ -1,0 +1,26 @@
+#poster{
+    background-image: url('/static/images/poster.png'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    height: 900px;
+}
+
+
+
+.card{
+    background-color: #1a1d26;
+    border: 4px solid black;
+    border-radius: 10px;
+}
+
+
+.card-body{
+    color: white
+}
+
+#site-footer {
+    height: 90px;
+    background: #1a1a1a;
+    color: #fab917;
+    }
+
