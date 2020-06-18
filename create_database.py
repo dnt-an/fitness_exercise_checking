@@ -49,6 +49,3 @@ def drop_table():
   except Exception as err:
     print('ERROR BY DROP TABLE', err)
 
-delete_all()
-l = ['andang', 0, 0, 0, 0]
-insert_into_db(l)
