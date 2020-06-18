@@ -22,26 +22,24 @@
 
 <body>
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark" style="height: 60px; background-color: #1a1d26;">
-    <a class="navbar-brand" href="/" style="margin-left: 45%;">
+  <nav class="navbar navbar-expand-lg navbar-dark" style="height: 60px; background-color: #1a1d26; justify-content: center;">
+    <a class="navbar-brand" href="/">
       <img src="static/images/GetFitLogo.png" alt="logo" style="width:200px; height:50px;">
     </a>
   </nav>
-  <p id='status' style="margin: 0px; font-size: 10px;">Loading model...</p>
-  <p style="margin: 0px; font-size: 10px;">cond1: <span id="cond1"> 0 </span> </p>
-  <p style="margin: 0px; font-size: 10px;">cond2: <span id="cond2"> 0 </span> </p>
-  <div class="container-fluid" style="margin-top: 20px;">
+
+  <div class="container-fluid" >
     <div class="row">
-      <div class="col-md-5" >
+      <div class="col-md-8 " style="padding: 0px;">
         <div id="sketch-holder">
           <!-- Place of canvas -->
         </div>
       </div>
 
-      <div class="col-md-6" style="padding-left: 200px; padding-top: 80px;">
+      <div class="col-md-4" style="padding-top: 150px; background-color: #fab917;">
         <div style="margin-bottom: 30px; ">
           <!-- Start collecting data -->
-          <button type="button" class="starting_training_btn btn btn-warning btn-lg" onclick="startTraining()"> <h2>START</h2> </button>
+          <button type="button" class="starting_training_btn btn btn-success btn-lg" onclick="startTraining()"> <h2>START</h2> </button>
 
          <!-- Stop collecting data and printing out result-->
           <button type="button" style="display:none;" class="stopping_training_btn btn btn-danger btn-lg" data-toggle="modal" data-target="#ResultModal" onclick="stopTraining()"> <h2>STOP</h2> </button>
@@ -70,7 +68,7 @@
         </div>
         <div class="modal-body">
           <div>
-            <b>Mistake: </b> <div id = "modal_mistake_count" > 0 </div> 
+            <b>Mistake: </b> <div id = "modal_mistake_count"> 0 </div> 
           </div>
           <div>
             <b>Correct: </b> <div id= "modal_success_count"> 0 </div>
@@ -82,47 +80,15 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save result</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveData()">Save result</button>
         </div>
       </div>
     </div>
   </div>
-  
-  <audio media-player="audioPlayer" id="audioExcellent"
-                crossOrigin="anonymous" src="static/audio/excellent.mp3"></audio>
-
-  <audio media-player="audioPlayer" id="audioExcellent2"
-                crossOrigin="anonymous" src="static/audio/excellent2.mp3"></audio>
-
-  <audio media-player="audioPlayer" id="audioExcellent3"
-                crossOrigin="anonymous" src="static/audio/excellent3.mp3"></audio>
-
- <audio media-player="audioPlayer" id="audioExcellent4"
-                crossOrigin="anonymous" src="static/audio/excellent4.mp3"></audio>
-
-  <audio media-player="audioPlayer" id="audioBicepCurls1"
-                crossOrigin="anonymous" src="static/audio/bicep_curls_mistake1.mp3"></audio>
-
-  <audio media-player="audioPlayer" id="audioBicepCurls2"
-                crossOrigin="anonymous" src="static/audio/bicep_curls_mistake2.mp3"></audio>
-
-  <audio media-player="audioPlayer" id="audioFrontRaise1"
-                crossOrigin="anonymous" src="static/audio/front_raise_mistake1.mp3"></audio>
-
-  <audio media-player="audioPlayer" id="audioFrontRaise2"
-                crossOrigin="anonymous" src="static/audio/front_raise_mistake2.mp3"></audio>
-
-  <audio media-player="audioPlayer" id="audioLateralRaise1"
-                crossOrigin="anonymous" src="static/audio/lateral_raise_mistake1.mp3"></audio>
-
-  <audio media-player="audioPlayer" id="audioLateralRaise2"
-                crossOrigin="anonymous" src="static/audio/lateral_raise_mistake2.mp3"></audio>
-
-  <audio media-player="audioPlayer" id="audioSquat1"
-                crossOrigin="anonymous" src="static/audio/squat_mistake1.mp3"></audio>
-
-  <audio media-player="audioPlayer" id="audioSquat2"
-                crossOrigin="anonymous" src="static/audio/squat_mistake2.mp3"></audio>
+  {% for key, value in sound_file_dict.items() %}
+    <audio media-player="audioPlayer" id={{key}}
+      crossOrigin="anonymous" src={{value}}></audio>
+  {% endfor %}
 
   <script src="../static/webcam.js"></script>
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -134,4 +100,3 @@
 </html>
 
 
-<!-- <script src="{{ url_for('static', filename='video.js') }}"></script> -->

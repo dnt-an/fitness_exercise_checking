@@ -3,6 +3,8 @@ let interval;
 
 let poseNet;
 let poses = [];
+var count_to_db = 0;
+var type_exercise; 
 
 // set some options for posenet model
 let options = {
@@ -21,11 +23,11 @@ let options = {
 };
 
 function setup() {
-  var canvas = createCanvas(800, 600);
+  var canvas = createCanvas(1080, 850);
   canvas.parent('sketch-holder');
   let constraints = {
     video: {
-      optional: [{ maxFrameRate: 1000 }]
+      optional: [{ maxFrameRate: 4000 }]
     },
     audio: false
   };
@@ -71,17 +73,16 @@ function sendData() {
   let queryString = window.location.search;
   //console.log(queryString);
   let urlParams = new URLSearchParams(queryString);
-  let type_exercise = urlParams.get('type')
+  type_exercise = urlParams.get('type')
   //console.log(type_exercise);
 
   if (poses.length>0){
       if (poses[0].pose.score > 0.05){
-        let json_data = {'data-uri': poses[0].pose.keypoints,
-                          'type-exercise': type_exercise}
+      let json_data = {'data-uri': poses[0].pose.keypoints,
+                        'type-exercise': type_exercise}
       fetch('/predict/', {
         method: 'POST',
         processData: false,
-
         headers: {
           'Accept': 'application/json, text/plain, */*',
           'Content-Type': 'application/json; charset=utf-8'
@@ -90,60 +91,39 @@ function sendData() {
       }).then(res=>res.json())
       .then(res => {
         console.log(res);
-        document.getElementById("cond1").innerHTML = res.cond1;
-        document.getElementById("cond2").innerHTML = res.cond2;
+        // document.getElementById("cond1").innerHTML = res.cond1;
+        // document.getElementById("cond2").innerHTML = res.cond2;
         document.getElementById("mistake_count").innerHTML = res.mistake_count;
         document.getElementById("success_count").innerHTML = res.success_count;
+        count_to_db = res.success_count;
         document.getElementById("feedback").innerHTML = res.feedback;
         document.getElementById("modal_mistake_count").innerHTML = res.mistake_count;
         document.getElementById("modal_success_count").innerHTML = res.success_count;
         document.getElementById("modal_feedback").innerHTML = res.feedback;
-
-        if (res.sound_file=='excellent.mp3'){
-          document.getElementById("audioExcellent").play();
-          console.log("Playing sound now!");
-        } else if (res.sound_file=='excellent2.mp3'){
-          document.getElementById("audioExcellent2").play();
-          console.log("Playing sound now!");
-        } else if (res.sound_file=='excellent3.mp3'){
-          document.getElementById("audioExcellent3").play();
-          console.log("Playing sound now!");
-        } else if (res.sound_file=='excellent4.mp3'){
-          document.getElementById("audioExcellent4").play();
-          console.log("Playing sound now!");
-        } else if (res.sound_file=='bicep_curls_mistake1.mp3'){
-          document.getElementById("audioBicepCurls1").play();
-          console.log("Playing sound now!");
-        } else if (res.sound_file=='bicep_curls_mistake2.mp3'){
-          document.getElementById("audioBicepCurls2").play();
-          console.log("Playing sound now!");
-        } else if (res.sound_file=='front_raise_mistake1.mp3'){
-          document.getElementById("audioFrontRaise1").play();
-          console.log("Playing sound now!");
-        } else if (res.sound_file=='front_raise_mistake2.mp3'){
-          document.getElementById("audioFrontRaise2").play();
-          console.log("Playing sound now!");
-        } else if (res.sound_file=='lateral_raise_mistake1.mp3'){
-          document.getElementById("audioLateralRaise1").play();
-          console.log("Playing sound now!");
-        } else if (res.sound_file=='lateral_raise_mistake2.mp3'){
-          document.getElementById("audioLateralRaise2").play();
-          console.log("Playing sound now!");
-        } else if (res.sound_file=='squat_mistake1.mp3'){
-          document.getElementById("audioSquat1").play();
-          console.log("Playing sound now!");
-        } else if (res.sound_file=='squat_mistake2.mp3'){
-          document.getElementById("audioSquat2").play();
-          console.log("Playing sound now!");
-        }
+        if (res.sound_file != 'none'){
+          document.getElementById(res.sound_file).play();
+        };
       })
     }
   }
 }
 
+function saveData() {
+  let json_data = {'type-exercise': type_exercise,
+                    'count':count_to_db}
+  fetch('/saveData/', {
+    method: 'POST',
+    processData: false,
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json; charset=utf-8'
+    },
+    body: JSON.stringify(json_data)
+  }).then(res=>res.json())
+}
 
 function modelReady() {
-  select('#status').html('Model Loaded');
+  console.log('Model Loaded');
 }
 
 function draw() {

@@ -19,17 +19,17 @@ from playsound import playsound
 # tts.save(filename)
 # playsound(filename)
 
-text ="Good one!"
-tts = gTTS(text=text, lang='en', slow=False)
-filename = 'static/audio/excellent4.mp3'
-tts.save(filename)
-playsound(filename)
-
-# text = 'Try to curl your forearm more.'
+# text ="Good one!"
 # tts = gTTS(text=text, lang='en', slow=False)
-# filename = 'audio/bicep_curls_mistake1.mp3'
+# filename = 'static/audio/excellent4.mp3'
 # tts.save(filename)
 # playsound(filename)
+
+text = 'You should curl your forearm more.'
+tts = gTTS(text=text, lang='en', slow=False)
+filename = 'static/audio/bicep_curls_mistake1.mp3'
+tts.save(filename)
+playsound(filename)
 
 # text = 'Try to steady your upper arm.'
 # tts = gTTS(text=text, lang='en', slow=False)
@@ -37,11 +37,11 @@ playsound(filename)
 # tts.save(filename)
 # playsound(filename)
 
-# text = 'Try to raise your arm higher.'
-# tts = gTTS(text=text, lang='en', slow=False)
-# filename = 'audio/front_raise_mistake1.mp3'
-# tts.save(filename)
-# playsound(filename)
+text = 'You should raise your arm higher.'
+tts = gTTS(text=text, lang='en', slow=False)
+filename = 'static/audio/front_raise_mistake1.mp3'
+tts.save(filename)
+playsound(filename)
 
 # text = 'Try to keep your back straight.'
 # tts = gTTS(text=text, lang='en', slow=False)
@@ -63,12 +63,12 @@ playsound(filename)
 
 # text = 'Raise your right arm higher.'
 # tts = gTTS(text=text, lang='en', slow=False)
-# filename = 'lateral_raise_mistake1.mp3'
+# filename = 'static/audio/lateral_raise_mistake1.mp3'
 # tts.save(filename)
 # playsound(filename)
 
-# text = 'Raise your left arm higher.'
-# tts = gTTS(text=text, lang='en', slow=False)
-# filename = 'lateral_raise_mistake2.mp3'
-# tts.save(filename)
-# playsound(filename)
+text = 'You should raise your left arm higher.'
+tts = gTTS(text=text, lang='en', slow=False)
+filename = 'static/audio/lateral_raise_mistake2.mp3'
+tts.save(filename)
+playsound(filename)
